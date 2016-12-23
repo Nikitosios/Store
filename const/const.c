@@ -12,3 +12,4 @@ void main (void)
 	printf("Площадь: %f.\n", res);
 	return;
 }
+

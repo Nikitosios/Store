@@ -30,3 +30,4 @@ int main (void)
 	printf("Символ %c!\n", character);
 	return 0;
 }
+

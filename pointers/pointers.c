@@ -3,7 +3,7 @@
 unsigned char variable = 0;
 unsigned char* variablePointer = NULL;
 
-void main ()
+int main ()
 {
 	variablePointer = &variable;
 
@@ -14,6 +14,6 @@ void main ()
 	printf("\nЗначение переменной variable(%i) хранится в памяти по адресу %p.", variable, variablePointer);
 
 	printf("\n\n");
-	return;
+	return 0;
 }
 
