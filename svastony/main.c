@@ -15,14 +15,14 @@ const int button_height = 50;
 const int spin_width = 100;
 const int spin_height = 50;
 GtkSpinButton *spin;
- 
+
 void drawSvaston (GtkButton *button, gpointer data)
 {
 	GtkWidget *dialog;
 	unsigned int width = (unsigned int) gtk_spin_button_get_value(spin);
 	GError *error;
 	GtkWidget *svaston = gtk_image_new_from_pixbuf(gdk_pixbuf_new_from_file_at_scale(svaston_file,
-		width, width, TRUE, &error));
+				width, width, TRUE, &error));
 	GtkWidget *content_area;
 
 	dialog = gtk_dialog_new_with_buttons(title_sv,
