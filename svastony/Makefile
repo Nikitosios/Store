@@ -5,3 +5,5 @@ LIBS=`pkg-config --libs gtk+-3.0`
 EXE=svastony
 all:
 	$(CC) $(CFLAGS) -o $(EXE) main.c $(PACKAGES)
+clean:
+	rm -rf $(EXE)

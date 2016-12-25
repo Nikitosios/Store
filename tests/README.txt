@@ -1,8 +1,9 @@
 
 Hello!
 
-I compiled the same program by gcc and g++ (last versions).
-Then i 3 times did 'time program_compiled_by_gcc' and wrote results
-to file printfc.tests. Then i did the same actions with program compiled by g++
-and compared results.  Program compiled by gcc was faster at 5%.
+It was a test: how faster C works vs C++.
+I compiled same program by gcc and g++.
+Then i 3 times did 'time promram_written_in_C' and wrote results
+to file 'printfc.tests'. And same action for a program written in C++.
+In my case program written on C was faster at 5%.
 
