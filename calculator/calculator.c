@@ -50,3 +50,4 @@ void main (void)
 	printing(calcing());
 	return;
 }
+

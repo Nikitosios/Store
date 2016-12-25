@@ -67,7 +67,7 @@ void helpCommand(void)
     printf("Help command invoked.");
 }
 
-void programmCode (void)
+void programCode (void)
 {
 	//-code-
 	return;
@@ -82,7 +82,8 @@ int main(const int const argc, const char * const argv[])
 	}
 	else printf(AC_GREEN "[+] Congratulations!%s\n", AC_RESET);
 
-	programmCode();
+	programCode();
 
 	return EXIT_SUCCESS;
 }
+

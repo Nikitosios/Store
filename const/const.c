@@ -1,4 +1,5 @@
 #include <stdio.h>
+
 #define Pi 3.14
 
 float R;
@@ -12,3 +13,4 @@ void main (void)
 	printf("Площадь: %f.\n", res);
 	return;
 }
+
