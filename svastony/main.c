@@ -14,12 +14,12 @@ const int button_width = 250;
 const int button_height = 50;
 const int spin_width = 100;
 const int spin_height = 50;
-GtkSpinButton *spin;
+GtkWidget *spin;
 
 void drawSvaston (GtkButton *button, gpointer data)
 {
 	GtkWidget *dialog;
-	unsigned int width = (unsigned int) gtk_spin_button_get_value(spin);
+	unsigned int width = (unsigned int) gtk_spin_button_get_value(GTK_SPIN_BUTTON(spin));
 	GError *error;
 	GtkWidget *svaston = gtk_image_new_from_pixbuf(gdk_pixbuf_new_from_file_at_scale(svaston_file,
 				width, width, TRUE, &error));
@@ -53,10 +53,10 @@ int main (int argc, char ** argv)
 	label = gtk_label_new(label_text);
 	button = gtk_button_new_with_label("Нарисовать свастон!");
 	spin = gtk_spin_button_new_with_range(spin_min, spin_max, spin_step);
-	gtk_grid_attach(grid, button, 0, 0, button_width, button_height);
-	gtk_grid_attach(grid, label, 0, button_height + 10, 400, 50);
-	gtk_grid_attach(grid, spin, 0, button_height * 2 + 20, spin_width, spin_height);
-	gtk_spin_button_set_value(spin, spin_start);
+	gtk_grid_attach(GTK_GRID(grid), button, 0, 0, button_width, button_height);
+	gtk_grid_attach(GTK_GRID(grid), label, 0, button_height + 10, 400, 50);
+	gtk_grid_attach(GTK_GRID(grid), GTK_WIDGET(spin), 0, button_height * 2 + 20, spin_width, spin_height);
+	gtk_spin_button_set_value(GTK_SPIN_BUTTON(spin), spin_start);
 	gtk_container_add(GTK_CONTAINER(window), grid);
 	gtk_widget_show_all(window);
 	g_signal_connect(G_OBJECT(window), "destroy", G_CALLBACK(gtk_main_quit), NULL);
