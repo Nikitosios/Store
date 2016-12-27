@@ -9,6 +9,7 @@ int main (const int const argc, const char ** argv)
 	fo = fopen(argv[2], "w");
 	fseek(fi, 0, SEEK_END);
 	size = ftell(fi);
+	fseek(fi, 0, SEEK_SET);
 	for (long i = 0; i < size; i++)
 		putc(getc(fi), fo);
 	fclose(fi);
