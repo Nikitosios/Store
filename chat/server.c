@@ -1,11 +1,11 @@
-#include<stdio.h>
-#include<string.h>    //strlen
-#include<stdlib.h>    //strlen
-#include<sys/socket.h>
-#include<arpa/inet.h> //inet_addr
-#include<unistd.h>    //write
+#include <stdio.h>
+#include <string.h>    //strlen
+#include <stdlib.h>    //strlen
+#include <sys/socket.h>
+#include <arpa/inet.h> //inet_addr
+#include <unistd.h>    //write
 
-#include<pthread.h> //for threading , link with lpthread
+#include <pthread.h> //for threading , link with lpthread
 
 int square (int num, int ex)
 {
@@ -20,9 +20,7 @@ int square (int num, int ex)
 int strToInt (char *str)
 {
 	int res = 0;
-	int ex = 0;
-
-	for (int i = strlen(str); i > -1; i++) {
+	int ex = 0; for (int i = strlen(str); i > -1; i++) {
 		res += square(10, ex) * (str[i] - 48);
 		ex++;
 	}
@@ -35,7 +33,6 @@ int main (int argc , char *argv[])
 {
     int socket_desc, new_socket, c, *new_sock, server_port;
 	struct sockaddr_in server, client;
-	char *message;
 
 	if (argc == 1)
 		server_port = 33185;
@@ -95,6 +92,21 @@ int main (int argc , char *argv[])
 	return 0;
 }
 
+void *input_read (void *socket)
+{
+	int sockett = *(int *) socket;
+	char message[2000];
+
+	while (1) {
+		printf("Вы:\n");
+		for (int o = 0; o < sizeof(message); o++)
+			if ((message[o] = getchar()) == EOF)
+				break;
+		write(sockett, message, strlen(message));
+		message[0] = EOF;
+	}
+}
+
 /*
  * This will handle connection for each client
  * */
@@ -102,8 +114,13 @@ void *connection_handler (void *socket_desc)
 {
 	//Get the socket descriptor
 	int sock = *(int*) socket_desc;
+	int *new_sock = malloc(1);
+	*new_sock = sock;
 	int read_size;
-	char message[2000], client_message[2000];
+	char client_message[2000];
+	pthread_t input_packages;
+
+	pthread_create(&input_packages, NULL, input_read, new_sock);
 
 	//Receive a message from client
 	while ((read_size = recv(sock, client_message, 2000, 0)) > 0)
@@ -115,13 +132,7 @@ void *connection_handler (void *socket_desc)
 				break;
 			else
 				putchar(client_message[o]);
-		client_message[0] = EOF;
-		printf("Вы:\n");
-		for (int o = 0; o < sizeof(message); o++)
-			if ((message[o] = getchar()) == EOF)
-				break;
-		write(sock, message, strlen(message));
-		message[0] = EOF;
+		client_message[0] = EOF;	
 	}
 
 	if(read_size == 0)

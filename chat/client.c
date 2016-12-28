@@ -1,9 +1,32 @@
-#include<stdio.h> //printf
-#include<string.h>    //strlen
-#include<sys/socket.h>    //socket
-#include<arpa/inet.h> //inet_addr
+#include <stdio.h> //printf
+#include <string.h> //strlen
+#include <sys/socket.h> //socket
+#include <arpa/inet.h> //inet_addr
+#include <pthread.h> //multithread
+#include <stdlib.h>
 
 const char stdport[] = "33185";
+
+void *output_packages (void *parameters)
+{
+	int sock = *(int *) parameters;
+	char message[2000];
+
+	while (1) {
+		printf("Вы:\n");
+		for (int o = 0; o < sizeof(message); o++)
+			if ((message[o] = getchar()) == EOF)
+				break;
+	
+		//Send some data
+		if(send(sock, message, strlen(message), 0) < 0)
+		{
+			puts("Send failed");
+			exit(1);
+		}
+		message[0] = EOF;
+	}
+}
 
 int square (int num, int ex) {
 	int res = 1;
@@ -15,11 +38,20 @@ int square (int num, int ex) {
 
 int main (int argc, char *argv[])
 {
-    int sock;
+	int sock;
+	char server_reply[2000];
     struct sockaddr_in server;
-    char message[2000] , server_reply[2000], server_ip_port[23], c;
+    char server_ip_port[23], c;
 	char server_ip[17], server_port[6];
 	int server_p = 0;
+
+	FILE *readme = fopen("README.txt", "r");
+	fseek(readme, 0, SEEK_END);
+	int readmeS = ftell(readme);
+	fseek(readme, 0, SEEK_SET);
+	for (int o = 0; o < readmeS; o++)
+		putchar(fgetc(readme));
+	fclose(readme);
 
 	//Read an IP:port of server
 	int i;
@@ -72,23 +104,12 @@ int main (int argc, char *argv[])
 	puts("Connected");
 	puts("Привет!");
 
-	//keep communicating with server
+	//output packages
+	pthread_t oPacks;
+	pthread_create(&oPacks, NULL, output_packages, (void *) &sock);
+
 	while (1)
 	{
-		printf("Вы:\n");
-		for (int o = 0; o < sizeof(message); o++)
-			if ((message[o] = getchar()) == EOF)
-				break;
-
-		//Send some data
-		if(send(sock, message, strlen(message), 0) < 0)
-		{
-			puts("Send failed");
-			return 1;
-		}
-
-		message[0] = EOF;
-
 		//Receive a reply from the server
 		if(recv(sock, server_reply, 2000, 0) < 0)
 		{
@@ -96,13 +117,14 @@ int main (int argc, char *argv[])
 			break;
 		}
 
-		printf("Никита Кот:\n");
+		printf("----------------------\nНикита Кот:\n");
 		for (int o = 0; o < sizeof(server_reply); o++)
 			if (server_reply[o] == EOF)
 				break;
 			else
 				putchar(server_reply[o]);
-		server_reply[0] = EOF; 
+		server_reply[0] = EOF;
+		printf("----------------------\n");
 	}
 
 	close(sock);
