@@ -21,8 +21,9 @@ void drawSvaston (GtkButton *button, gpointer data)
 	GtkWidget *dialog;
 	unsigned int width = (unsigned int) gtk_spin_button_get_value(GTK_SPIN_BUTTON(spin));
 	GError *error;
-	GtkWidget *svaston = gtk_image_new_from_pixbuf(gdk_pixbuf_new_from_file_at_scale(svaston_file,
-				width, width, TRUE, &error));
+	GtkWidget *svaston;
+	svaston = gtk_image_new_from_pixbuf(gdk_pixbuf_new_from_file_at_scale(svaston_file, width, width,
+					FALSE, &error));
 	GtkWidget *content_area;
 
 	dialog = gtk_dialog_new_with_buttons(title_sv,
