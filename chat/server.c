@@ -4,7 +4,6 @@
 #include <sys/socket.h>
 #include <arpa/inet.h> //inet_addr
 #include <unistd.h>    //write
-
 #include <pthread.h> //for threading , link with lpthread
 
 int square (int num, int ex)
@@ -20,7 +19,9 @@ int square (int num, int ex)
 int strToInt (char *str)
 {
 	int res = 0;
-	int ex = 0; for (int i = strlen(str); i > -1; i++) {
+	int ex = 0; 
+	
+	for (int i = strlen(str) - 1; i > -1; i--) {
 		res += square(10, ex) * (str[i] - 48);
 		ex++;
 	}
@@ -35,7 +36,7 @@ int main (int argc , char *argv[])
 	struct sockaddr_in server, client;
 
 	if (argc == 1)
-		server_port = 33185;
+		server_port = 31185;
 	else server_port = strToInt(argv[1]);
 
 	// Create socket
@@ -126,13 +127,14 @@ void *connection_handler (void *socket_desc)
 	while ((read_size = recv(sock, client_message, 2000, 0)) > 0)
 	{
 		//Send the message back to client
-		printf("Кот из Мордора:\n");
+		printf("---------------------\nКот из Мордора:\n");
 		for (int o = 0; o < sizeof(client_message); o++)
 			if (client_message[o] == EOF)
 				break;
 			else
 				putchar(client_message[o]);
-		client_message[0] = EOF;	
+		client_message[0] = EOF;
+		printf("---------------------\n");
 	}
 
 	if(read_size == 0)

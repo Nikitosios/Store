@@ -5,11 +5,11 @@
 #include <pthread.h> //multithread
 #include <stdlib.h>
 
-const char stdport[] = "33185";
+const char stdport[] = "31185";
 
 void *output_packages (void *parameters)
 {
-	int sock = *(int *) parameters;
+	int sockt = *(int *) parameters;
 	char message[2000];
 
 	while (1) {
@@ -19,7 +19,7 @@ void *output_packages (void *parameters)
 				break;
 	
 		//Send some data
-		if(send(sock, message, strlen(message), 0) < 0)
+		if(send(sockt, message, sizeof(message), 0) < 0)
 		{
 			puts("Send failed");
 			exit(1);
@@ -66,11 +66,9 @@ int main (int argc, char *argv[])
 		server_ip_port[i] = '\0';
 	} else 
 		for (int o = 0; o <= strlen(argv[1]); o++) server_ip_port[o] = argv[1][o];
-	printf("IP:port is %s\n", server_ip_port);
 	for (i = 0; server_ip_port[i] != ':' && server_ip_port[i] != '\0'; i++)
 		server_ip[i] = server_ip_port[i];
 	server_ip[i] = '\0';
-	printf("IP is %s\n", server_ip);
 	if (server_ip_port[i] == ':') {
 		i++;
 		for (int o = 0; server_ip_port[i - 1] != '\0'; o++) {
@@ -79,12 +77,8 @@ int main (int argc, char *argv[])
 		}
 	} else
 		for (int o = 0; o < sizeof server_port; o++) server_port[o] = stdport[o];
-	printf("Port is %s\n", server_port);
 	unsigned char ex = 0;
 	for (int o = strlen(server_port) - 1; o != -1; o--) {
-		printf("o is %i\n", o);
-		printf("10^ex is %i\n", square(10, ex));
-		printf("Num is %i\n", server_port[o] - 48);
 		server_p += square(10, ex) * (server_port[o] - 48);
 		ex++;
 	}
@@ -108,7 +102,6 @@ int main (int argc, char *argv[])
 		return 1;
 	}
 	puts("Connected");
-	puts("Привет!");
 
 	//output packages
 	pthread_t oPacks;
