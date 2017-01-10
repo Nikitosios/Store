@@ -82,12 +82,12 @@ int show_all (int a, int b)
 	init_pair(3, COLOR_RED, COLOR_RED);
 	init_pair(4, COLOR_BLACK, COLOR_RED);
 	attrset(COLOR_PAIR(3));
-	struct object button_exit = create_object(0, 0, 5, 3);
-	for (int i = 0; i < button_exit.h; i++)
-		for (int it = 0; it < button_exit.w; it++)
+	struct object button_exit = create_object(COLS/8*7-5, 0, 5, 3);
+	for (int i = button_exit.y; i < button_exit.h + button_exit.y; i++)
+		for (int it = button_exit.x; it < button_exit.w + button_exit.x; it++)
 			mvaddch(i, it, ' ');
 	attrset(A_NORMAL);
-	mvaddch(button_exit.h/2, button_exit.w/2, 'X' | COLOR_PAIR(4) | A_BOLD);
+	mvaddch(button_exit.y + button_exit.h/2, button_exit.x + button_exit.w/2, 'X' | COLOR_PAIR(4) | A_BOLD);
 	msgsend = create_object(COLS/8*7, 0, COLS/8, LINES);
 	init_pair(8, COLOR_BLUE, COLOR_BLUE);
 	for (int i = msgsend.x; i <= msgsend.x + msgsend.w; i++)
