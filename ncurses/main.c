@@ -131,52 +131,53 @@ int main (void)
 void dance (void)
 {
 	signed char f = 0, l = 0;
-	const char *msg = "Ты коченный даун )00))0)))00)))";
+	const char *msg = "Ты конченный даун )00))0)))00)))";
 
 	clear();
 	setlocale(LC_ALL, "");
 	halfdelay(5);
+	start_color();
 	while (1) {
-		for (int i = 0; i < strlen(msg); i++) {
-			if (getch() == '\n')
-				return;
-			mvprintw(LINES/2-1, COLS/8-1, "   ");
-			mvprintw(LINES/2-1, COLS - COLS/8 - 2, "      ");
-			move(LINES/2, COLS/2 - strlen(msg) / 2 + i);
-			if (f == 0) {
-				addch(msg[i]);
-				f = 1;
-			} else {
-				addch(msg[i]);
-				f = 0;
-			}
-			if (l == 0) {
-				mvaddch(LINES/2-1, COLS/8 - 1, '\\' | A_BOLD);
-				mvaddch(LINES/2-1, COLS/8, '\\' | A_BOLD);
-				mvaddch(LINES/2, COLS/8, '|' | A_BOLD);
-				mvaddch(LINES/2+1, COLS/8 - 1, '/' | A_BOLD);
-				mvaddch(LINES/2+1, COLS/8 + 1, '\\' | A_BOLD);
-				mvaddch(LINES/2-1, COLS - COLS/8 - 1, '\\' | A_BOLD);
-				mvaddch(LINES/2-1, COLS - COLS/8, '\\' | A_BOLD);
-				mvaddch(LINES/2, COLS - COLS/8, '|' | A_BOLD);
-				mvaddch(LINES/2+1, COLS - COLS/8 - 1, '/' | A_BOLD);
-				mvaddch(LINES/2+1, COLS - COLS/8 + 1, '\\' | A_BOLD);
-				l = 1;
-			} else {
-				mvaddch(LINES/2-1, COLS/8, '/' | A_BOLD);
-				mvaddch(LINES/2-1, COLS/8 + 1, '/' | A_BOLD);
-				mvaddch(LINES/2, COLS/8, '|' | A_BOLD);
-				mvaddch(LINES/2+1, COLS/8 - 1, '/' | A_BOLD);
-				mvaddch(LINES/2+1, COLS/8 + 1, '\\' | A_BOLD);
-				mvaddch(LINES/2-1, COLS - COLS/8, '/' | A_BOLD);
-				mvaddch(LINES/2-1, COLS - COLS/8 + 1, '/' | A_BOLD);
-				mvaddch(LINES/2, COLS - COLS/8, '|' | A_BOLD);
-				mvaddch(LINES/2+1, COLS - COLS/8 - 1, '/' | A_BOLD);
-				mvaddch(LINES/2+1, COLS - COLS/8 + 1, '\\' | A_BOLD);
-				l = 0;
-			}
-			refresh();
+		if (getch() == '\n')
+			return;
+		mvprintw(LINES/2-1, COLS/8-1, "   ");
+		mvprintw(LINES/2-1, COLS - COLS/8 - 2, "      ");
+		init_pair(1, COLOR_GREEN, COLOR_BLACK);
+		if (f == 0) {
+			attrset(A_BOLD | A_STANDOUT | COLOR_PAIR(1));
+			mvaddstr(LINES/2, (COLS - strlen(msg)) / 2 + COLS/16, msg);
+			attrset(A_NORMAL);
+			f = 1;
+		} else {
+			mvaddstr(LINES/2, (COLS - strlen(msg))/2 + COLS/16, "                                ");
+			f = 0;
 		}
+		if (l == 0) {
+			mvaddch(LINES/2-1, COLS/8 - 1, '\\' | A_BOLD);
+			mvaddch(LINES/2-1, COLS/8, '\\' | A_BOLD);
+			mvaddch(LINES/2, COLS/8, '|' | A_BOLD);
+			mvaddch(LINES/2+1, COLS/8 - 1, '/' | A_BOLD);
+			mvaddch(LINES/2+1, COLS/8 + 1, '\\' | A_BOLD);
+			mvaddch(LINES/2-1, COLS - COLS/8 - 1, '\\' | A_BOLD);
+			mvaddch(LINES/2-1, COLS - COLS/8, '\\' | A_BOLD);
+			mvaddch(LINES/2, COLS - COLS/8, '|' | A_BOLD);
+			mvaddch(LINES/2+1, COLS - COLS/8 - 1, '/' | A_BOLD);
+			mvaddch(LINES/2+1, COLS - COLS/8 + 1, '\\' | A_BOLD);
+			l = 1;
+		} else {
+			mvaddch(LINES/2-1, COLS/8, '/' | A_BOLD);
+			mvaddch(LINES/2-1, COLS/8 + 1, '/' | A_BOLD);
+			mvaddch(LINES/2, COLS/8, '|' | A_BOLD);
+			mvaddch(LINES/2+1, COLS/8 - 1, '/' | A_BOLD);
+			mvaddch(LINES/2+1, COLS/8 + 1, '\\' | A_BOLD);
+			mvaddch(LINES/2-1, COLS - COLS/8, '/' | A_BOLD);
+			mvaddch(LINES/2-1, COLS - COLS/8 + 1, '/' | A_BOLD);
+			mvaddch(LINES/2, COLS - COLS/8, '|' | A_BOLD);
+			mvaddch(LINES/2+1, COLS - COLS/8 - 1, '/' | A_BOLD);
+			mvaddch(LINES/2+1, COLS - COLS/8 + 1, '\\' | A_BOLD);
+			l = 0;
+		}
+		refresh();
 	}
 	getch();
 	return;

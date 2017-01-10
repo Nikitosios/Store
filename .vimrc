@@ -16,8 +16,8 @@ set tabstop=4
 set shiftwidth=4
 set noexpandtab
 map <F5> :!make<CR>
-map <F7> :!./
+map <F7> :!make<CR>:!./
 map <F6> ==j100h
-map <F4> 200<F6>
-map <F9> :!./<Up><CR>
+map <F4> 1000<F6>
+map <F9> :!make<CR>:!./<Up><CR>
 map <C-n> :NERDTreeToggle<CR>
