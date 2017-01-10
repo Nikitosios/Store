@@ -97,8 +97,6 @@ int main (void)
 					choice++;
 				break;
 			case '\n':
-				mvprintw(LINES/2, COLS/2-3, "chosen");
-				msleep(1000);
 				switch (choice) {
 					case 3:
 						return 0;
