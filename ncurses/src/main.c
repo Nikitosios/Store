@@ -1,8 +1,7 @@
 #include <ncurses.h>
-#include <form.h>
+#include "header.h"
 
 int update_screen (void);
-FIELD *field[3];
 
 int main (void)
 {	
@@ -11,14 +10,11 @@ int main (void)
 	cbreak();
 	noecho();
 	keypad(stdscr, TRUE);
+	start_color();
 	
-	/* Initialize the fields */
-	field[0] = new_field(1, 10, 4, 18, 0, 0);
-	field[1] = new_field(1, 10, 6, 18, 0, 0);
-	field[2] = NULL;
-
 	update_screen();
 	
+	getch();
 	endwin();
 	return 0;
 }

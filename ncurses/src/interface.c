@@ -1,56 +1,30 @@
 #include <form.h>
-
-FIELD *field[3];
-FORM  *my_form;
-int ch;
+#include <panel.h>
+#include "header.h"
 
 int update_screen (void)
 {
-	/* Set field options */
-	set_field_back(field[0], A_UNDERLINE);	/* Print a line for the option	*/
-	field_opts_off(field[0], O_AUTOSKIP);	/* Don't go to next field when this */
-	/* Field is filled up		*/
-	set_field_back(field[1], A_UNDERLINE); 
-	field_opts_off(field[1], O_AUTOSKIP);
+	int maxy, maxx;
 
-	/* Create the form and post it */
-	my_form = new_form(field);
-	post_form(my_form);
+	init_pair(1, COLOR_BLACK, COLOR_BLUE);
+	getmaxyx(stdscr, maxy, maxx);
+	msgsend = create_object(0, maxx/8*7, maxy, maxx/8, COLOR_PAIR(1) | A_BOLD);
 	refresh();
-
-	mvprintw(4, 10, "Value 1:");
-	mvprintw(6, 10, "Value 2:");
-	refresh();
-
-	/* Loop through to get user requests */
-	while((ch = getch()) != '\n')
-	{	
-		switch(ch)
-		{	case KEY_DOWN:
-			/* Go to next field */
-			form_driver(my_form, REQ_NEXT_FIELD);
-			/* Go to the end of the present buffer */
-			/* Leaves nicely at the last character */
-			form_driver(my_form, REQ_END_LINE);
-			break;
-			case KEY_UP:
-			/* Go to previous field */
-			form_driver(my_form, REQ_PREV_FIELD);
-			form_driver(my_form, REQ_END_LINE);
-			break;
-			default:
-			/* If this is a normal character, it gets */
-			/* Printed				  */	
-			form_driver(my_form, ch);
-			break;
-		}
-	}
-
-	/* Un post form and free the memory */
-	unpost_form(my_form);
-	free_form(my_form);
-	free_field(field[0]);
-	free_field(field[1]); 
-
 	return 0;
+}
+
+struct object create_object(int y, int x, int h, int w, unsigned int flags)
+{
+	struct object obj;
+
+	obj.win = newwin(h, w, y, x);
+	box(obj.win, 0, 0);
+	obj.panel = new_panel(obj.win);
+	update_panels();
+	doupdate();
+	for (int yi = y+1; yi < y+h-1; yi++)
+		for (int xi = x+1; xi < x+w-1; xi++)
+			mvaddch(yi, xi, ' ' | flags);
+	refresh();
+	return obj;
 }
