@@ -1,10 +1,15 @@
 CC=gcc
 CFLAGS=-Wall
-LDFLAGS=-lncursesw
-all: clean ncurses hello_world
-ncurses:
-	$(CC) $(CFLAGS) -o ncurses main.c $(LDFLAGS)
-hello_world:
-	$(CC) $(CFLAGS) -o hello_world hello_world.c $(LDFLAGS)
+LDFLAGS=-lncursesw -lpanel -lmenu -lform
+SOURCES=src/*
+OBJECTS=build/*.o
+EXE=ncurses_chat
+all: clean $(EXE)
+$(EXE): $(OBJECTS)
+	$(CC) $(CFLAGS) $(OBJECTS) -o $(EXE) $(LDFLAGS)
+$(OBJECTS): $(SOURCES)
+	$(CC) $(CFLAGS) -c $(SOURCES) $(LDFLAGS)
+	mkdir -p build/
+	mv *.o build/
 clean:
-	rm -f ncurses hello_world
+	rm -rf build/ $(EXE)
