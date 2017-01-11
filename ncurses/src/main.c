@@ -1,28 +1,24 @@
 #include <ncurses.h>
-#include <locale.h>
 #include <form.h>
 
 int update_screen (void);
+FIELD *field[3];
 
 int main (void)
-{
-	int maxy, maxx;
-
-	/* initialize all */
-	setlocale(LC_ALL, "");
+{	
+	/* Initialize curses */
 	initscr();
 	cbreak();
 	noecho();
 	keypad(stdscr, TRUE);
-	start_color();
-	mousemask(ALL_MOUSE_EVENTS, NULL);
-	/* main code */
+	
+	/* Initialize the fields */
+	field[0] = new_field(1, 10, 4, 18, 0, 0);
+	field[1] = new_field(1, 10, 6, 18, 0, 0);
+	field[2] = NULL;
+
 	update_screen();
-	/* end program */
-	clear();
-	getmaxyx(stdscr, maxy, maxx);
-	mvprintw(maxy/2, maxx/2-8, "Press any key...");
-	getch();
+	
 	endwin();
 	return 0;
 }

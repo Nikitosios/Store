@@ -1,6 +1,6 @@
 CC=gcc
 CFLAGS=-Wall
-LDFLAGS=-lncursesw -lpanel -lmenu -lform
+LDFLAGS=-lncursesw -lform
 SOURCES=src/*
 OBJECTS=build/*.o
 EXE=$(shell basename `pwd`)
@@ -8,7 +8,7 @@ all: clean $(EXE)
 $(EXE): $(OBJECTS)
 	$(CC) $(CFLAGS) $(OBJECTS) -o $(EXE) $(LDFLAGS)
 $(OBJECTS): $(SOURCES)
-	$(CC) $(CFLAGS) -c $(SOURCES) $(LDFLAGS)
+	$(CC) $(CFLAGS) -c $(SOURCES)
 	mkdir -p build/
 	mv *.o build/
 clean:
