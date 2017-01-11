@@ -3,7 +3,7 @@ CFLAGS=-Wall
 LDFLAGS=-lncursesw -lpanel -lmenu -lform
 SOURCES=src/*
 OBJECTS=build/*.o
-EXE=ncurses_chat
+EXE=$(shell basename `pwd`)
 all: clean $(EXE)
 $(EXE): $(OBJECTS)
 	$(CC) $(CFLAGS) $(OBJECTS) -o $(EXE) $(LDFLAGS)
