@@ -9,3 +9,8 @@ typedef struct object {
 } object;
 
 struct object msgsend;
+struct object msgbox;
+struct object filesend;
+struct object exit_b;
+FORM *textform;
+FIELD *textbox[2];

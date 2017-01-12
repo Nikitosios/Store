@@ -7,8 +7,11 @@ int update_screen (void)
 	int maxy, maxx;
 
 	init_pair(1, COLOR_BLACK, COLOR_BLUE);
+	init_pair(2, COLOR_BLACK, COLOR_WHITE);
 	getmaxyx(stdscr, maxy, maxx);
 	msgsend = create_object(0, maxx/8*7, maxy, maxx/8, COLOR_PAIR(1) | A_BOLD);
+	msgbox = create_object(maxy/4*3, maxx/8+1, maxy, maxx-maxx/8, COLOR_PAIR(2));
+	textbox[0] = new_field(msgbox.y+1, msgbox.x+1, msgbox.h-2, msgbox.w-2, 0, 0);
 	refresh();
 	return 0;
 }
