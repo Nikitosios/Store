@@ -1,15 +1,15 @@
 CC=gcc
 CFLAGS=-Wall
 LDFLAGS=-lncursesw -lform -lpanel
-SOURCES=src/*
+SOURCES=src/*.c
 OBJECTS=build/*.o
 EXE=$(shell basename `pwd`)
 all: clean $(EXE)
 $(EXE): $(OBJECTS)
-	$(CC) $(CFLAGS) $(OBJECTS) -o $(EXE) $(LDFLAGS)
+	@$(CC) $(CFLAGS) $(OBJECTS) -o $(EXE) $(LDFLAGS)
 $(OBJECTS): $(SOURCES)
-	$(CC) $(CFLAGS) -c $(SOURCES)
-	mkdir -p build/
-	mv *.o build/
+	@mkdir -p build/
+	@$(CC) $(CFLAGS) -c $(SOURCES)
+	@mv *.o build/
 clean:
-	rm -rf build/ $(EXE)
+	@rm -rf build/ $(EXE)

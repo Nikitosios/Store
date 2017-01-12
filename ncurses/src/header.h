@@ -4,6 +4,7 @@
 struct object create_object(int y, int x, int h, int w, unsigned int flags);
 
 typedef struct object {
+	int y, x, h, w, ey, ex, cy, cx;
 	WINDOW *win;
 	PANEL *panel;
 } object;
