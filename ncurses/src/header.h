@@ -1,12 +1,13 @@
 #include <form.h>
-#include <panel.h>
 
-struct object create_object(int y, int x, int h, int w, unsigned int flags);
+#define BORD_WIDTH 7
+
+struct object create_object (int y, int x, int h, int w, unsigned int flags, bool form);
+int update_screen (void);
 
 typedef struct object {
 	int y, x, h, w, ey, ex, cy, cx;
 	WINDOW *win;
-	PANEL *panel;
 } object;
 
 struct object msgsend;

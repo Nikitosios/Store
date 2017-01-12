@@ -1,8 +1,6 @@
 #include <ncurses.h>
 #include "header.h"
 
-int update_screen (void);
-
 int main (void)
 {	
 	/* Initialize curses */
@@ -11,6 +9,7 @@ int main (void)
 	noecho();
 	keypad(stdscr, TRUE);
 	start_color();
+	refresh();
 	
 	update_screen();
 	
