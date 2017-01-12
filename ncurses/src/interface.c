@@ -19,10 +19,13 @@ int update_screen (void)
 	attroff(COLOR_PAIR(3));
 	filesend = create_object(msgbox.h, BORD_WIDTH, msgbox.y, 0, COLOR_PAIR(3), false);
 	mvaddch(filesend.cy, filesend.cx, '#' | COLOR_PAIR(3));
-#define A 5
-	exit_b = create_object(A-A/2, A, 0, COLS-A, COLOR_PAIR(4), false);
-#undef A
-	mvaddch(exit_b.cy, exit_b.cx, 'X' | COLOR_PAIR(4));
+	unsigned char bw = COLS/8;
+	alarm_b = create_object((bw/2)%2 ? bw/2 : bw/2-1, bw, 0, COLS-bw, COLOR_PAIR(4),
+			false);
+	free(&bw);
+	attron(COLOR_PAIR(4));
+	mvaddstr(alarm_b.cy, alarm_b.cx, "♫");
+	attroff(COLOR_PAIR(4));
 	refresh();
 	move(msgbox.y+1, msgbox.x+1);
 	return 0;

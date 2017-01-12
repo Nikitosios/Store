@@ -9,6 +9,7 @@ int main (void)
 	noecho();
 	keypad(stdscr, TRUE);
 	start_color();
+	setlocale(LC_ALL, "ru_RU.UTF-8");
 	refresh();
 	
 	update_screen();

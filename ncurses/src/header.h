@@ -1,4 +1,5 @@
 #include <form.h>
+#include <locale.h>
 
 #define BORD_WIDTH 7
 
@@ -13,6 +14,6 @@ typedef struct object {
 struct object msgsend;
 struct object msgbox;
 struct object filesend;
-struct object exit_b;
+struct object alarm_b;
 FORM *textform;
 FIELD *textbox[2];
