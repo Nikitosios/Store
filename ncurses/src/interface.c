@@ -74,17 +74,13 @@ int show_message (char *msg, bool who)
 	if (who) {
 		send_message(msg);
 		FILE *history = fopen("history.txt", "a");
-		fprintf(history, "%s\n", msg);
+		fprintf(history, "%s\n", msgformat(msg));
 		fclose(history);
 	} else {
 		FILE *history = fopen("history.txt", "a");
-		fprintf(history, "%s\n", msg);
+		fprintf(history, "%s\n", msgformat(msg));
 		fclose(history);
 	}
-	return 0;
-}
-
-int send_message (char *msg)
-{
+	update_screen();
 	return 0;
 }

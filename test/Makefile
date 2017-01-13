@@ -1,6 +1,6 @@
 CC=gcc
 CFLAGS=-Wall
-LDFLAGS=-lncursesw -lpanel
+LDFLAGS=-lncursesw -lpanel -lform
 SOURCES=src/*
 OBJECTS=build/*.o
 EXE=$(shell basename `pwd`)

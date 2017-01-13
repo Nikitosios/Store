@@ -6,7 +6,8 @@ OBJECTS=build/*.o
 EXE=$(shell basename `pwd`)
 all: clean $(EXE)
 $(EXE): $(OBJECTS)
-	@$(CC) $(CFLAGS) $(OBJECTS) -o $(EXE) $(LDFLAGS)
+	@mkdir -p $(EXE)
+	@$(CC) $(CFLAGS) $(OBJECTS) -o $(EXE)/$(EXE) $(LDFLAGS)
 $(OBJECTS): $(SOURCES)
 	@mkdir -p build/
 	@$(CC) $(CFLAGS) -c $(SOURCES)
