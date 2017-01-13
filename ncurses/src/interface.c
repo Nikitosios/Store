@@ -10,8 +10,9 @@ int update_screen (void)
 	bkgd(COLOR_PAIR(1));
 	clear();
 	refresh();
-	msgbox = create_object(LINES/4, (COLS-BORD_WIDTH)/8*7+1, LINES - LINES/4, BORD_WIDTH,
-			COLOR_PAIR(2), true);
+	msgbox = create_object(LINES/4,
+			((COLS-BORD_WIDTH)/8*7+1)%2 ? (COLS-BORD_WIDTH)/8*7 : (COLS-BORD_WIDTH)/8*7+1,
+			LINES - LINES/4, BORD_WIDTH, COLOR_PAIR(2), true);
 	msgsend = create_object(msgbox.h, COLS - msgbox.w - BORD_WIDTH, msgbox.y, msgbox.ex+1,
 			COLOR_PAIR(3), false);
 	attron(COLOR_PAIR(3));
@@ -19,13 +20,12 @@ int update_screen (void)
 	attroff(COLOR_PAIR(3));
 	filesend = create_object(msgbox.h, BORD_WIDTH, msgbox.y, 0, COLOR_PAIR(3), false);
 	mvaddch(filesend.cy, filesend.cx, '#' | COLOR_PAIR(3));
-	unsigned char bw = COLS/8;
-	alarm_b = create_object((bw/2)%2 ? bw/2 : bw/2-1, bw, 0, COLS-bw, COLOR_PAIR(4),
-			false);
-	free(&bw);
-	attron(COLOR_PAIR(4));
-	mvaddstr(alarm_b.cy, alarm_b.cx, "♫");
-	attroff(COLOR_PAIR(4));
+	unsigned char bw = (COLS/8)%2 ? COLS/8-1 : COLS/8;
+	alarm_b = create_object((bw/2)%2 ? bw/2 : bw/2-1, bw, 0, COLS-bw,
+			alarming ? COLOR_PAIR(2) : COLOR_PAIR(4), false);
+	attron(alarming ? COLOR_PAIR(2) : COLOR_PAIR(4));
+	mvaddstr(alarm_b.cy, alarm_b.cx-1, "♫");
+	attroff(alarming ? COLOR_PAIR(2) : COLOR_PAIR(4));
 	refresh();
 	move(msgbox.y+1, msgbox.x+1);
 	return 0;
@@ -67,4 +67,24 @@ void destroy_win (WINDOW *win, unsigned int cp)
 	wrefresh(win);
 	delwin(win);
 	return;
+}
+
+int show_message (char *msg, bool who)
+{
+	if (who) {
+		send_message(msg);
+		FILE *history = fopen("history.txt", "a");
+		fprintf(history, "%s\n", msg);
+		fclose(history);
+	} else {
+		FILE *history = fopen("history.txt", "a");
+		fprintf(history, "%s\n", msg);
+		fclose(history);
+	}
+	return 0;
+}
+
+int send_message (char *msg)
+{
+	return 0;
 }
