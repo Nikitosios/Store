@@ -27,7 +27,39 @@ int update_screen (void)
 	mvaddstr(alarm_b.cy, alarm_b.cx-1, "♫");
 	attroff(alarming ? COLOR_PAIR(2) : COLOR_PAIR(4));
 	refresh();
-	move(msgbox.y+1, msgbox.x+1);
+	curY = msgbox.y+1;
+	curX = msgbox.x+1;
+	for (char *i = my_msg; i < my_msgP; ++i) {
+		if (++curX >= msgbox.ex) {
+			curX = msgbox.x+1;
+			++curY;
+		}
+		if (*i != '\n') {
+			char *str = malloc(4);
+			if (*i >> 16 == 0) {
+				if (*i >> 8 == 0) {
+					str[0] = (char) *i;
+					str[1] = '\0';
+				} else {
+					str[0] = (char) (*i >> 8);
+					str[2] = (char) *i;
+					str[3] = '\0';
+				}
+			} else {
+				str[0] = (char) (*i >> 16);
+				str[1] = (char) (*i >> 8);
+				str[2] = (char) *i;
+				str[3] = '\0';
+			}
+			attron(COLOR_PAIR(2));
+			mvaddstr(curY, curX, str);
+			attroff(COLOR_PAIR(2));
+		}
+		else {
+			curX = msgbox.x+1;
+			++curY;
+		}
+	}
 	return 0;
 }
 

@@ -5,13 +5,12 @@ int parse_mouse (MEVENT event, struct object button);
 
 int main (void)
 {	
-	short c;
-	alarming = true;
+	int c;
 	MEVENT event;
-	char my_msg[MSG_SIZE];
-	char *my_msgP = my_msg;
 
 	/* Initialize curses */
+	my_msgP = my_msg;
+	alarming = true;
 	setlocale(LC_ALL, "");
 	initscr();
 	cbreak();
@@ -23,7 +22,6 @@ int main (void)
 	refresh();
 	
 	update_screen();
-	short ch[2];
 	while (1) {
 		switch (c = getch()) {
 			case KEY_MOUSE:
@@ -40,12 +38,8 @@ int main (void)
 						}
 					}
 				break;
-			case 31 ... 255:
-				ch[0] = c;
-				ch[1] = '\0';
-				attron(COLOR_PAIR(2));
-				addstr(ch);
-				attroff(COLOR_PAIR(2));
+			default:
+				parse_ch(c);
 				break;
 		}
 	}
