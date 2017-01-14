@@ -1,0 +1,9 @@
+let g:netrw_dirhistmax  =10
+let g:netrw_dirhist_cnt =7
+let g:netrw_dirhist_1='/media/nikitosios/FILES'
+let g:netrw_dirhist_2='/media/nikitosios/FILES/configure'
+let g:netrw_dirhist_3='/media/nikitosios/FILES'
+let g:netrw_dirhist_4='/media/nikitosios/FILES/configure'
+let g:netrw_dirhist_5='/etc/vim'
+let g:netrw_dirhist_6='/home/nikitosios/Загрузки/Telegram Desktop'
+let g:netrw_dirhist_7='/home/kot/C/project'

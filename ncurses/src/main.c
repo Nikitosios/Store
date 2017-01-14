@@ -5,7 +5,7 @@ int parse_mouse (MEVENT event, struct object button);
 
 int main (void)
 {	
-	int c;
+	short c;
 	MEVENT event;
 
 	/* Initialize curses */
@@ -22,6 +22,7 @@ int main (void)
 	refresh();
 	
 	update_screen();
+	move(msgbox.y+1, msgbox.x+1);
 	while (1) {
 		switch (c = getch()) {
 			case KEY_MOUSE:
@@ -49,7 +50,7 @@ int main (void)
 	return 0;
 }
 
-int send_message (char *msg)
+int send_message (short *msg)
 {
 	return 0;
 }
@@ -61,7 +62,7 @@ int parse_mouse (MEVENT event, struct object button)
 	return 0;
 }
 
-char *msgformat (char *msg)
+char *msgformat (short *msg)
 {
 	return 0;
 }

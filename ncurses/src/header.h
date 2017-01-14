@@ -18,10 +18,10 @@
 
 struct object create_object (int y, int x, int h, int w, unsigned int flags, bool form);
 int update_screen (void);
-int send_message (char *msg);
-int show_message (char *msg, bool who);
-char *msgformat (char *msg);
-int parse_ch (int ch);
+int send_message (short *msg);
+int show_message (short *msg, bool who);
+char *msgformat (short *msg);
+int parse_ch (short ch);
 
 typedef struct object {
 	int y, x, h, w, ey, ex, cy, cx;
@@ -34,6 +34,6 @@ struct object filesend;
 struct object alarm_b;
 
 bool alarming;
-char my_msg[MSG_SIZE];
-char *my_msgP;
+short my_msg[MSG_SIZE];
+short *my_msgP;
 int curY, curX;

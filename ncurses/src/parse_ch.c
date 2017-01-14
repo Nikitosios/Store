@@ -2,18 +2,21 @@
 
 int msgscroll (void);
 
-int parse_ch (int ch)
+int parse_ch (short ch)
 {
-	if (ch >= 32) {
+	if (ch == KEY_BACKSPACE) {
+		if (my_msgP > my_msg)
+			--my_msgP;
+		update_screen();
+	} else if (ch >= 32) {
 		*my_msgP = ch;
 		++my_msgP;
-	} else if (ch == 263)
-		--my_msgP;
-	else if (ch == '\n') {
+		update_screen();
+	} else if (ch == '\n') {
 		*my_msgP = '\n';
 		++my_msgP;
+		update_screen();
 	}
-	update_screen();
 	return 0;
 }
 

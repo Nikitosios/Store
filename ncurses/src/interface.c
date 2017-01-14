@@ -29,35 +29,28 @@ int update_screen (void)
 	refresh();
 	curY = msgbox.y+1;
 	curX = msgbox.x+1;
-	for (char *i = my_msg; i < my_msgP; ++i) {
+	move(curY, curX);
+	for (short *i = my_msg; i < my_msgP; ++i) {
 		if (++curX >= msgbox.ex) {
 			curX = msgbox.x+1;
 			++curY;
 		}
 		if (*i != '\n') {
-			char *str = malloc(4);
-			if (*i >> 16 == 0) {
-				if (*i >> 8 == 0) {
-					str[0] = (char) *i;
-					str[1] = '\0';
-				} else {
-					str[0] = (char) (*i >> 8);
-					str[2] = (char) *i;
-					str[3] = '\0';
-				}
-			} else {
-				str[0] = (char) (*i >> 16);
-				str[1] = (char) (*i >> 8);
-				str[2] = (char) *i;
-				str[3] = '\0';
+			if (*i >> 8 == 0)
+				mvaddch(curY, curX, *i | COLOR_PAIR(2));
+			else {
+				char *st = malloc(3);
+				st[0] = *i >> 8;
+				st[1] = *i;
+				st[2] = 0;
+				attron(COLOR_PAIR(2));
+				mvaddstr(curY, curX, st);
+				attroff(COLOR_PAIR(2));
 			}
-			attron(COLOR_PAIR(2));
-			mvaddstr(curY, curX, str);
-			attroff(COLOR_PAIR(2));
-		}
-		else {
+		} else {
 			curX = msgbox.x+1;
 			++curY;
+			move(curY, curX);
 		}
 	}
 	return 0;
@@ -101,7 +94,7 @@ void destroy_win (WINDOW *win, unsigned int cp)
 	return;
 }
 
-int show_message (char *msg, bool who)
+int show_message (short *msg, bool who)
 {
 	if (who) {
 		send_message(msg);
