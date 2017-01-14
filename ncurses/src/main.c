@@ -1,7 +1,13 @@
 #include <ncurses.h>
 #include "header.h"
 
+#define GO_UP 1
+#define GO_DOWN 2
+#define GO_LEFT 3
+#define GO_RIGHT 4
+
 int parse_mouse (MEVENT event, struct object button);
+int msggo (char where);
 
 int main (void)
 {	
@@ -37,6 +43,18 @@ int main (void)
 						}
 					}
 				break;
+			case KEY_UP:
+				msggo(GO_UP);
+				break;
+			case KEY_DOWN:
+				msggo(GO_DOWN);
+				break;
+			case KEY_LEFT:
+				msggo(GO_LEFT);
+				break;
+			case KEY_RIGHT:
+				msggo(GO_RIGHT);
+				break;
 			default:
 				parse_ch(c);
 				break;
@@ -62,5 +80,18 @@ int parse_mouse (MEVENT event, struct object button)
 
 char *msgformat (short *msg)
 {
+	return 0;
+}
+
+int msggo (char where)
+{
+	char *my_msgPB;
+
+	getyx(stdscr, curY, curX);
+/*	
+	while (my_msgPB != my_msgP) {
+		if 
+	}
+*/
 	return 0;
 }
