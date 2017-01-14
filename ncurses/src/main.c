@@ -13,9 +13,7 @@ int main (void)
 	alarming = true;
 	setlocale(LC_ALL, "");
 	initscr();
-	cbreak();
 	noecho();
-	halfdelay(1);
 	keypad(stdscr, TRUE);
 	mousemask(ALL_MOUSE_EVENTS, NULL);
 	start_color();

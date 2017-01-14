@@ -36,17 +36,7 @@ int update_screen (void)
 			++curY;
 		}
 		if (*i != '\n') {
-			if (*i >> 8 == 0)
-				mvaddch(curY, curX, *i | COLOR_PAIR(2));
-			else {
-				char *st = malloc(3);
-				st[0] = *i >> 8;
-				st[1] = *i;
-				st[2] = 0;
-				attron(COLOR_PAIR(2));
-				mvaddstr(curY, curX, st);
-				attroff(COLOR_PAIR(2));
-			}
+			addch(*i | COLOR_PAIR(2));
 		} else {
 			curX = msgbox.x+1;
 			++curY;
@@ -106,6 +96,7 @@ int show_message (short *msg, bool who)
 		fprintf(history, "%s\n", msgformat(msg));
 		fclose(history);
 	}
+	my_msgP = my_msg;
 	update_screen();
 	return 0;
 }
