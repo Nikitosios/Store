@@ -1,3 +1,5 @@
+#define _DEBUG
+
 #include <ncurses.h>
 #include "header.h"
 
@@ -7,18 +9,18 @@
 #define GO_RIGHT 4
 
 int parse_mouse (MEVENT event, struct object button);
-int msggo (char where);
 
 int main (void)
 {	
-	short c;
+	int c;
 	MEVENT event;
 
 	/* Initialize curses */
-	my_msgP = my_msg;
+	my_msgEP = my_msgP = my_msg;
 	alarming = true;
 	setlocale(LC_ALL, "");
 	initscr();
+	cbreak();
 	noecho();
 	keypad(stdscr, TRUE);
 	mousemask(ALL_MOUSE_EVENTS, NULL);
@@ -44,29 +46,39 @@ int main (void)
 					}
 				break;
 			case KEY_UP:
-				msggo(GO_UP);
+				/* сделать перемещение вверх-вниз и подредактировать файл */
 				break;
 			case KEY_DOWN:
-				msggo(GO_DOWN);
+				/* parse_ch.c, чтобы корректно вставлялись и удалялись символы */
 				break;
 			case KEY_LEFT:
-				msggo(GO_LEFT);
+				if (my_msgP > my_msg)
+					--my_msgP;
+				update_screen();
 				break;
 			case KEY_RIGHT:
-				msggo(GO_RIGHT);
+				if (my_msgP < my_msgEP)
+					++my_msgP;
+				update_screen();
 				break;
 			default:
-				parse_ch(c);
+				if (c != ERR)
+					parse_ch(c);
 				break;
 		}
 	}
-	
+
 	getch();
 	endwin();
 	return 0;
 }
 
-int send_message (short *msg)
+int send_message (unsigned char *msg)
+{
+	return 0;
+}
+
+char *msgformat (unsigned char *msg)
 {
 	return 0;
 }
@@ -78,20 +90,3 @@ int parse_mouse (MEVENT event, struct object button)
 	return 0;
 }
 
-char *msgformat (short *msg)
-{
-	return 0;
-}
-
-int msggo (char where)
-{
-	char *my_msgPB;
-
-	getyx(stdscr, curY, curX);
-/*	
-	while (my_msgPB != my_msgP) {
-		if 
-	}
-*/
-	return 0;
-}
