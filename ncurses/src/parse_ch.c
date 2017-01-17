@@ -4,7 +4,7 @@ int msgscroll (void);
 
 int parse_ch (short ch)
 {
-	if (ch == KEY_BACKSPACE) {
+	if (ch == KEY_BACKSPACE || ch == '\b') {
 		if (my_msgP == my_msgEP && my_msgP > my_msg) {
 			--my_msgEP;
 			--my_msgP;
