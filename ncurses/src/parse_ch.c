@@ -4,7 +4,7 @@ int msgscroll (void);
 
 int parse_ch (short ch)
 {
-	if (ch == KEY_BACKSPACE || ch == '\b') {
+	if (ch == KEY_BACKSPACE || ch == '\b' || ch == 127) {
 		if (my_msgP == my_msgEP && my_msgP > my_msg) {
 			--my_msgEP;
 			--my_msgP;
@@ -13,18 +13,13 @@ int parse_ch (short ch)
 				--my_msgEP;
 			}
 		} else if (my_msgP < my_msgEP && my_msgP > my_msg) {
-			for (unsigned char *i = my_msgP; i < my_msgEP; ++i) {
-				if (*i >= 128) {
-					if (*(i + 2) >= 128) {
-						*i = *(i + 2);
-						*(i + 1) = *(i + 3);
-						++i;
-					} else *i = *(i + 2);
-				} else *i = *(i + 1);
-			}
+			for (unsigned char *i = my_msgP - 1; i < my_msgEP; ++i)
+				*i = *(i + 1);
 			--my_msgP;
 			--my_msgEP;
-			if (*my_msgP >= 128) {
+			if (*(my_msgP - 1) >= 128) {
+				for (unsigned char *i = my_msgP - 1; i < my_msgEP; ++i)
+					*i = *(i + 1);
 				--my_msgP;
 				--my_msgEP;
 			}

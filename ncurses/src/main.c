@@ -6,6 +6,11 @@
 #define GO_LEFT 3
 #define GO_RIGHT 4
 
+//#define _DEBUG
+#if defined(_DEBUG)
+FILE *d;
+#endif
+
 int parse_mouse (MEVENT event, struct object button);
 
 int main (void)
@@ -28,7 +33,6 @@ int main (void)
 	
 	update_screen();
 	move(msgbox.y+1, msgbox.x+1);
-	FILE *d;
 	while (1) {
 		switch (c = getch()) {
 			case KEY_MOUSE:
@@ -45,21 +49,15 @@ int main (void)
 					}
 				break;
 			case KEY_UP:
-				d = fopen("debug.log", "a");
-				fprintf(d, "y: %i, x: %i\n", msggetstrn(my_msgP) - 1, msggetsymn());
-				fclose(d);
 				if (msggetstrn(my_msgP) != 1)
 					msggo(msggetstrn(my_msgP) - 1, msggetsymn());
 				break;
 			case KEY_DOWN:
-				d = fopen("debug.log", "a");
-				fprintf(d, "y: %i, x: %i\n", msggetstrn(my_msgP) + 1, msggetsymn());
-				fclose(d);
 				if (msggetstrn(my_msgP) != msggetstrn(my_msgEP))
 					msggo(msggetstrn(my_msgP) + 1, msggetsymn());
 				break;
 			case KEY_LEFT:
-				if (my_msgP > my_msg) {
+				if (my_msgP > my_msg && *(my_msgP - 1) != '\n') {
 					--my_msgP;
 					if (*my_msgP >= 128)
 						--my_msgP;
@@ -67,7 +65,7 @@ int main (void)
 				}
 				break;
 			case KEY_RIGHT:
-				if (my_msgP < my_msgEP) {
+				if (my_msgP < my_msgEP && *my_msgP != '\n') {
 					++my_msgP;
 					if (*my_msgP >= 128)
 						++my_msgP;
@@ -118,7 +116,7 @@ int msggetsymn (void)
 	int sym = 0;
 	unsigned char *it, f = 0;
 
-	for (it = my_msgP; *(it - 1) != '\n' && it - 1 != my_msg; --it);
+	for (it = my_msgP; *(it - 1) != '\n' && (it - 1) != my_msg - 1; --it);
 	for (unsigned char *i = it; i < my_msgP; ++i) {
 		if (*i >= 128) {
 			if (!f) {
