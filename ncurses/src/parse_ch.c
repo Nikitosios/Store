@@ -51,6 +51,10 @@ int parse_ch (short ch)
 			++my_msgEP;
 		}
 		update_msgbox();
+		getyx(stdscr, curY, curX);
+		if (curY >= msgbox.ey)
+			++msgoffset;
+		update_msgbox();
 	}
 	return 0;
 }

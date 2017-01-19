@@ -19,6 +19,7 @@ int main (void)
 	MEVENT event;
 
 	/* Initialize curses */
+	msgoffset = 0;
 	my_msgEP = my_msgP = my_msg;
 	msgoffset = 0;
 	alarming = true;
@@ -36,7 +37,7 @@ int main (void)
 	while (1) {
 		switch (c = getch()) {
 			case KEY_MOUSE:
-				if (getmouse(&event) == OK)
+				if (getmouse(&event) == OK) {
 					if (event.bstate & BUTTON1_CLICKED) {
 						if (parse_mouse(event, alarm_b)) {
 							alarming = alarming ? false : true;
@@ -47,6 +48,11 @@ int main (void)
 							update_screen();
 						}
 					}
+					if (event.bstate & BUTTON3_CLICKED) {
+						++msgoffset;
+						update_msgbox();
+					}
+				}
 				break;
 			case KEY_UP:
 				if (msggetstrn(my_msgP) != 1)

@@ -110,11 +110,17 @@ struct xy msgmove (void)
 
 int update_msgbox (void)
 {
+	unsigned char *it;
+	int offs = 0;
+
 	for (int y = msgbox.y+1; y < msgbox.ey; ++y)
 		for (int x = msgbox.x+1; x < msgbox.ex; ++x)
 			mvaddch(y, x, ' ' | COLOR_PAIR(2));
 	move(msgbox.y+1, msgbox.x+1);
-	for (unsigned char *i = my_msg; i < my_msgEP; ++i) {
+	for (it = my_msg; offs < msgoffset; ++it)
+		if (*it == '\n')
+			++offs;
+	for (unsigned char *i = it; i < my_msgEP; ++i) {
 		if (*i != '\n') {
 			getyx(stdscr, curY, curX);
 			if (curX >= msgbox.ex)
