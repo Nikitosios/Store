@@ -55,12 +55,20 @@ int main (void)
 				}
 				break;
 			case KEY_UP:
-				if (msggetstrn(my_msgP) != 1)
+				if (msggetstrn(my_msgP) != 1) {
+					getyx(stdscr, curY, curX);
+					if (curY <= msgbox.y + 1)
+						--msgoffset;
 					msggo(msggetstrn(my_msgP) - 1, msggetsymn());
+				}
 				break;
 			case KEY_DOWN:
-				if (msggetstrn(my_msgP) != msggetstrn(my_msgEP))
+				if (msggetstrn(my_msgP) != msggetstrn(my_msgEP)) {
+					getyx(stdscr, curY, curX);
+					if (curY >= msgbox.ey - 1)
+						++msgoffset;
 					msggo(msggetstrn(my_msgP) + 1, msggetsymn());
+				}
 				break;
 			case KEY_LEFT:
 				if (my_msgP > my_msg && *(my_msgP - 1) != '\n') {

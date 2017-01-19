@@ -89,8 +89,13 @@ struct xy msgmove (void)
 	struct xy st;
 	st.y = msgbox.y+1, st.x = msgbox.x+1;
 	char f = 0;
+	unsigned char *it;
+	int offs = 0;
 
-	for (unsigned char *i = my_msg; i < my_msgP; ++i) {
+	for (it = my_msg; offs < msgoffset; ++it)
+		if (*it == '\n')
+			++offs;
+	for (unsigned char *i = it; i < my_msgP; ++i) {
 		if (*i >= 128) {
 			if (!f) {
 				++st.x;
@@ -125,10 +130,11 @@ int update_msgbox (void)
 			getyx(stdscr, curY, curX);
 			if (curX >= msgbox.ex)
 				move(curY+1, msgbox.x+1);
-			addch(*i | COLOR_PAIR(2));
+			if (curY < msgbox.ey)
+				addch(*i | COLOR_PAIR(2));
 		} else {
 			getyx(stdscr, curY, curX);
-			move(curY+1, msgbox.x+1);
+				move(curY+1, msgbox.x+1);
 		}
 	}
 	struct xy msgmove_ret = msgmove();
