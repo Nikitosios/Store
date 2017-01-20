@@ -7,10 +7,6 @@ export VISUAL=vim
 alias ls='ls --color=auto'
 alias grep='grep --color=auto'
 alias less='/usr/share/vim/vim74/macros/less.sh'
-function vim() {
-	com='vim '"$1"
-	mate-terminal -e "$com"
-}
 man() {
 	env LESS_TERMCAP_mb=$'\E[01;31m' \
 		LESS_TERMCAP_md=$'\E[01;38;5;74m' \

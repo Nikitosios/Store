@@ -17,6 +17,7 @@ int main (void)
 {	
 	short c;
 	MEVENT event;
+	unsigned char my_nickname[41] = "Nikitosios";
 
 	/* Initialize curses */
 	msgoffset = 0;
@@ -44,7 +45,12 @@ int main (void)
 							update_screen();
 						}
 						if (parse_mouse(event, msgsend)) {
-							show_message(my_msg, true);
+							history = fopen("history.txt", "a");
+							fprintf(history, "%s:\t\n", my_nickname);
+							for (unsigned char *i = my_msg; i < my_msgEP; ++i)
+								fputc(*i, history);
+							fclose(history);
+							show_messages();
 							update_screen();
 						}
 					}

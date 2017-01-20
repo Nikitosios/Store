@@ -3,10 +3,13 @@
 
 int update_screen (void)
 {
+	unsigned char bw = (COLS/8)%2 ? COLS/8-1 : COLS/8;
+
 	init_pair(1, COLOR_BLACK, COLOR_MAGENTA);
 	init_pair(2, COLOR_BLACK, COLOR_WHITE);
 	init_pair(3, COLOR_BLACK, COLOR_BLUE);
 	init_pair(4, COLOR_BLACK, COLOR_RED);
+	init_pair(5, COLOR_MAGENTA, COLOR_MAGENTA);
 	bkgd(COLOR_PAIR(1));
 	clear();
 	msgbox = create_object(LINES/4,
@@ -19,12 +22,14 @@ int update_screen (void)
 	attroff(COLOR_PAIR(3));
 	filesend = create_object(msgbox.h, BORD_WIDTH, msgbox.y, 0, COLOR_PAIR(3), false);
 	mvaddch(filesend.cy, filesend.cx, '#' | COLOR_PAIR(3));
-	unsigned char bw = (COLS/8)%2 ? COLS/8-1 : COLS/8;
+	my_msgs = create_object(LINES-msgbox.h, COLS/2, 0, COLS/2+1, COLOR_PAIR(1), false);
 	alarm_b = create_object((bw/2)%2 ? bw/2 : bw/2-1, bw, 0, COLS-bw,
 			alarming ? COLOR_PAIR(2) : COLOR_PAIR(4), false);
 	attron(alarming ? COLOR_PAIR(2) : COLOR_PAIR(4));
 	mvaddstr(alarm_b.cy, alarm_b.cx-3, "[Ув.]");
 	attroff(alarming ? COLOR_PAIR(2) : COLOR_PAIR(4));
+	show_messages();
+	/* his_msgs = */
 	update_msgbox();
 	return 0;
 }
@@ -67,20 +72,31 @@ void destroy_win (WINDOW *win, unsigned int cp)
 	return;
 }
 
-int show_message (unsigned char *msg, bool who)
+int show_messages (void)
 {
-	if (who) {
-		send_message(msg);
-		FILE *history = fopen("history.txt", "a");
-		fprintf(history, "%s\n", msgformat(msg));
-		fclose(history);
-	} else {
-		FILE *history = fopen("history.txt", "a");
-		fprintf(history, "%s\n", msgformat(msg));
-		fclose(history);
+	int history_size = 0;
+	unsigned char ch;
+
+	system("touch history.txt");
+	history = fopen("history.txt", "r");
+	fgetc(history);
+	fseek(history, 0, SEEK_END);
+	history_size = ftell(history);
+	fseek(history, 0, SEEK_SET);
+	for (int i = 0; i < history_size; ++i) {
+		if ((ch = fgetc(history)) == '\n')
+			waddch(my_msgs.win, ch | COLOR_PAIR(5));
+		else {
+			getyx(my_msgs.win, curY, curX);
+			if (curX >= my_msgs.w-alarm_b.w-1)
+				wmove(my_msgs.win, curY + 1, 0);
+			waddch(my_msgs.win, ch | COLOR_PAIR(3));
+		}
 	}
+	fclose(history);
+	wrefresh(my_msgs.win);
 	my_msgEP = my_msgP = my_msg;
-	update_screen();
+	refresh();
 	return 0;
 }
 

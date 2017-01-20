@@ -1,6 +1,7 @@
 #include <ncurses.h>
 #include <stdlib.h>
 #include <locale.h>
+#include <stdio.h>
 
 #define BORD_WIDTH 7
 #define MSG_SIZE 2022
@@ -22,7 +23,7 @@ struct object create_object (int y, int x, int h, int w, unsigned int flags, boo
 int update_screen (void);
 int update_msgbox (void);
 int send_message (unsigned char *msg);
-int show_message (unsigned char *msg, bool who);
+int show_messages (void);
 char *msgformat (unsigned char *msg);
 int parse_ch (short ch);
 int msggetstrn (unsigned char *pointer);
@@ -38,6 +39,8 @@ struct object msgsend;
 struct object msgbox;
 struct object filesend;
 struct object alarm_b;
+struct object my_msgs;
+struct object his_msgs;
 
 bool alarming;
 unsigned char my_msg[MSG_SIZE];
@@ -45,3 +48,4 @@ unsigned char *my_msgP;
 unsigned char *my_msgEP;
 int msgoffset;
 int curY, curX;
+FILE *history;

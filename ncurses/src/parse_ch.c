@@ -13,16 +13,16 @@ int parse_ch (short ch)
 				--my_msgEP;
 			}
 		} else if (my_msgP < my_msgEP && my_msgP > my_msg) {
-			for (unsigned char *i = my_msgP - 1; i < my_msgEP; ++i)
-				*i = *(i + 1);
-			--my_msgP;
-			--my_msgEP;
 			if (*(my_msgP - 1) >= 128) {
 				for (unsigned char *i = my_msgP - 1; i < my_msgEP; ++i)
 					*i = *(i + 1);
 				--my_msgP;
 				--my_msgEP;
 			}
+			for (unsigned char *i = my_msgP - 1; i < my_msgEP; ++i)
+				*i = *(i + 1);
+			--my_msgP;
+			--my_msgEP;
 		}
 		update_msgbox();
 	} else if (ch >= 32) {
