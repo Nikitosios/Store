@@ -9,9 +9,7 @@ int update_screen (void)
 	init_pair(2, COLOR_BLACK,   COLOR_WHITE);
 	init_pair(3, COLOR_BLACK,   COLOR_BLUE);
 	init_pair(4, COLOR_BLACK,   COLOR_RED);
-	init_pair(5, COLOR_MAGENTA, COLOR_MAGENTA);
-	init_pair(6, COLOR_WHITE,   COLOR_BLUE);
-	bkgd(COLOR_PAIR(1));
+	init_pair(5, COLOR_MAGENTA, COLOR_MAGENTA); init_pair(6, COLOR_WHITE,   COLOR_BLUE); bkgd(COLOR_PAIR(1));
 	clear();
 	msgbox = create_object(LINES/4,
 			((COLS-BORD_WIDTH)/8*7+1)%2 ? (COLS-BORD_WIDTH)/8*7 : (COLS-BORD_WIDTH)/8*7+1,
@@ -23,12 +21,14 @@ int update_screen (void)
 	attroff(COLOR_PAIR(3));
 	filesend = create_object(msgbox.h, BORD_WIDTH, msgbox.y, 0, COLOR_PAIR(3), false);
 	mvaddch(filesend.cy, filesend.cx, '#' | COLOR_PAIR(3));
-	my_msgs = create_object(LINES-msgbox.h, COLS/2, 0, COLS/2+1, COLOR_PAIR(1), false);
-	delwin(my_msgs.win);
-	my_msgs.win = newwin(LINES-msgbox.h-2, COLS/2-2, 1, COLS/2+2);
+	my_msgs = create_object(LINES-msgbox.h, COLS/2+1, 0, COLS/2, COLOR_PAIR(1), false);
+	his_msgs = create_object(LINES-msgbox.h, COLS/2+1, 0, 0, COLOR_PAIR(1), false);
+	my_msgs.win = newwin(my_msgs.h - 2, my_msgs.w - 2, my_msgs.y + 1, my_msgs.x + 1);
+	his_msgs.win = newwin(his_msgs.h - 2, his_msgs.w - 2, his_msgs.y + 1, his_msgs.x + 1);
 	wbkgd(my_msgs.win, COLOR_PAIR(1));
-	for (int yi = 1; yi < LINES-msgbox.h-1; yi++)
-		for (int xi = COLS/2+3; xi < COLS-1; xi++)
+	wbkgd(his_msgs.win, COLOR_PAIR(1));
+	for (int yi = his_msgs.y + 1; yi < his_msgs.ey; yi++)
+		for (int xi = his_msgs.x + 1; xi < his_msgs.ex; xi++)
 			mvaddch(yi, xi, ' ' | COLOR_PAIR(5));
 	refresh();
 	alarm_b = create_object((bw/2)%2 ? bw/2 : bw/2-1, bw, 0, COLS-bw,
@@ -37,7 +37,6 @@ int update_screen (void)
 	mvaddstr(alarm_b.cy, alarm_b.cx-3, "[Ув.]");
 	attroff(alarming ? COLOR_PAIR(2) : COLOR_PAIR(4));
 	show_messages();
-	/* his_msgs = */
 	update_msgbox();
 	return 0;
 }
@@ -86,6 +85,7 @@ int show_messages (void)
 	unsigned char ch;
 	unsigned char bw = (COLS/8)%2 ? COLS/8-1 : COLS/8;
 	char nickname_showed = 0;
+	unsigned char history_text[20000];
 
 	system("touch history.txt");
 	history = fopen("history.txt", "r");
@@ -93,6 +93,8 @@ int show_messages (void)
 	fseek(history, 0, SEEK_END);
 	history_size = ftell(history);
 	fseek(history, 0, SEEK_SET);
+	fseek(history, -20000, SEEK_END);
+	/* code */
 	for (int i = 0; i < history_size; ++i) {
 		ch = fgetc(history);
 		if (!nickname_showed) {
