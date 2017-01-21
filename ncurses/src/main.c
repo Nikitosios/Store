@@ -45,6 +45,16 @@ int main (void)
 							update_screen();
 						}
 						if (parse_mouse(event, msgsend)) {
+							if (*(my_msgEP - 1) != '\n') {
+								*my_msgEP = '\n';
+								++my_msgEP;
+							}
+							while (1) {
+								if (*(my_msgEP - 2) != '\n')
+									break;
+								else
+									--my_msgEP;
+							}
 							history = fopen("history.txt", "a");
 							fprintf(history, "%s:\t\n", my_nickname);
 							for (unsigned char *i = my_msg; i < my_msgEP; ++i)
