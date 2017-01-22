@@ -1,7 +1,5 @@
 #include "header.h"
 
-int msgscroll (void);
-
 int parse_ch (short ch)
 {
 	if (ch == KEY_BACKSPACE || ch == '\b' || ch == 127) {
@@ -56,10 +54,5 @@ int parse_ch (short ch)
 			++msgoffset;
 		update_msgbox();
 	}
-	return 0;
-}
-
-int msgscroll (void)
-{
 	return 0;
 }
