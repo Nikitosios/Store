@@ -1,5 +1,5 @@
 CC=gcc
-CFLAGS=
+CFLAGS=-fms-extensions
 LDFLAGS=
 SOURCES=src/*.c
 OBJECTS=build/*.o
