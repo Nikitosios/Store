@@ -94,7 +94,7 @@ int show_messages (void)
 	history_size = ftell(history);
 	fseek(history, 0, SEEK_SET);
 	fseek(history, -20000, SEEK_END);
-	/* code */
+	
 	for (int i = 0; i < history_size; ++i) {
 		ch = fgetc(history);
 		if (!nickname_showed) {
