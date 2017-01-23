@@ -86,6 +86,7 @@ int show_messages (void)
 	unsigned char bw = (COLS/8)%2 ? COLS/8-1 : COLS/8;
 	char nickname_showed = 0;
 	unsigned char history_text[20000];
+	unsigned char *last_tab;
 
 	system("touch history.txt");
 	history = fopen("history.txt", "r");
@@ -94,7 +95,7 @@ int show_messages (void)
 	history_size = ftell(history);
 	fseek(history, 0, SEEK_SET);
 	fseek(history, -20000, SEEK_END);
-	
+	/* Семенюк даун */
 	for (int i = 0; i < history_size; ++i) {
 		ch = fgetc(history);
 		if (!nickname_showed) {

@@ -1,3 +1,4 @@
+export TERM=screen-256color
 if [[ `whoami` != 'root' ]]; then
 	PS1='\[\e[0;32m\]\u\[\e[0m\]@\h \W\[\e[0;32m\] \$\[\e[0m\] '
 else

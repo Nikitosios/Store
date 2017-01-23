@@ -1,4 +1,4 @@
-CC=gcc
+CC=g++
 CFLAGS=-Wall
 LDFLAGS=-lncursesw -lform -lpanel
 SOURCES=src/*.c

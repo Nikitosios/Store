@@ -1,3 +1,5 @@
+#ifndef HEADER_H
+#define HEADER_H
 #include <ncurses.h>
 #include <stdlib.h>
 #include <locale.h>
@@ -35,17 +37,18 @@ typedef struct object {
 	WINDOW *win;
 } object;
 
-struct object msgsend;
-struct object msgbox;
-struct object filesend;
-struct object alarm_b;
-struct object my_msgs;
-struct object his_msgs;
+extern struct object msgsend;
+extern struct object msgbox;
+extern struct object filesend;
+extern struct object alarm_b;
+extern struct object my_msgs;
+extern struct object his_msgs;
 
-bool alarming;
-unsigned char my_msg[MSG_SIZE];
-unsigned char *my_msgP;
-unsigned char *my_msgEP;
-int msgoffset;
-int curY, curX;
-FILE *history;
+extern bool alarming;
+extern unsigned char my_msg[MSG_SIZE];
+extern unsigned char *my_msgP;
+extern unsigned char *my_msgEP;
+extern int msgoffset;
+extern int curY, curX;
+extern FILE *history;
+#endif

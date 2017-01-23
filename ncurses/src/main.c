@@ -11,6 +11,21 @@
 FILE *d;
 #endif
 
+struct object msgsend;
+struct object msgbox;
+struct object filesend;
+struct object alarm_b;
+struct object my_msgs;
+struct object his_msgs;
+
+bool alarming;
+unsigned char my_msg[MSG_SIZE];
+unsigned char *my_msgP;
+unsigned char *my_msgEP;
+int msgoffset;
+int curY, curX;
+FILE *history;
+
 int parse_mouse (MEVENT event, struct object button);
 
 int main (void)
