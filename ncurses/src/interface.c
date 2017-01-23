@@ -1,3 +1,4 @@
+#include <string.h>
 #include "header.h"
 #include "interface.h"
 
@@ -79,13 +80,28 @@ void destroy_win (WINDOW *win, unsigned int cp)
 	return;
 }
 
+int how_many_lines (unsigned char *message)
+{
+	int lines = -1;
+	int cols = 1;
+
+	for (int i = 0; i < strlen(message); ++i) {
+		if (message[i] == '\n')
+			++lines;
+		if (cols >= my_msgs.w)
+			++cols;
+	}
+	return lines;
+}
+
 int show_messages (void)
 {
-	int history_size = 0;
+	int history_size = 0, it;
+	char f = 1;
 	unsigned char ch;
 	unsigned char bw = (COLS/8)%2 ? COLS/8-1 : COLS/8;
 	char nickname_showed = 0;
-	unsigned char history_text[20000];
+	unsigned char msg[21000] = { '\0' };
 	unsigned char *last_tab;
 
 	system("touch history.txt");
@@ -94,20 +110,37 @@ int show_messages (void)
 	fseek(history, 0, SEEK_END);
 	history_size = ftell(history);
 	fseek(history, 0, SEEK_SET);
-	fseek(history, -20000, SEEK_END);
+	fseek(history, -21000, SEEK_END);
+	for (int i = 0; i < history_size; ++i)
+		msg[i] = fgetc(history);
+	if (how_many_lines(msg) <= my_msgs.h)
+		wmove(my_msgs.win, my_msgs.h - 3 - how_many_lines(msg), 0);
+	else {
+		wmove(my_msgs.win, 0, 0);
+		f = 1;
+		for (int i = 0; i < (how_many_lines(msg) - my_msgs.h); ++i) {
+			if (msg[i] == '\n') {
+				it = i;
+				for (int ofs = 0; ofs < (strlen(msg) - i); ++ofs) {
+					msg[ofs] = msg[it];
+					++it;
+				}
+			}
+		}
+	}
 	/* Семенюк даун */
-	for (int i = 0; i < history_size; ++i) {
-		ch = fgetc(history);
-		if (!nickname_showed) {
+	for (int i = 0; i < strlen(msg); ++i) {
+		ch = msg[i];
+		if (f) {
 			if (ch != '\t')
 				waddch(my_msgs.win, ch | COLOR_PAIR(6) | A_BOLD);
 			else
-				nickname_showed = 1;
+				f = 0;
 		} else if (ch == '\n')
 			waddch(my_msgs.win, ch);
 		else {
 			getyx(my_msgs.win, curY, curX);
-			if (curX >= my_msgs.w-alarm_b.w-1)
+			if (curX >= my_msgs.w-alarm_b.w-1 && curY <= alarm_b.ey)
 				wmove(my_msgs.win, curY + 1, 0);
 			waddch(my_msgs.win, ch | COLOR_PAIR(3));
 		}
