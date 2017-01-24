@@ -77,6 +77,9 @@ int main (void)
 									fputc(*i, history);
 								fclose(history);
 								show_messages();
+								my_msgEP = my_msg;
+								my_msgP = my_msg;
+								msgoffset = 0;
 								update_screen();
 							}
 						}

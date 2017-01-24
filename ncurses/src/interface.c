@@ -82,14 +82,13 @@ void destroy_win (WINDOW *win, unsigned int cp)
 
 int how_many_lines (unsigned char *message)
 {
-	int lines = -1;
-	int cols = 1;
+	int lines = 0;
+	int i = 0;
 
-	for (int i = 0; i < strlen(message); ++i) {
+	while (message[i] != '\0') {
 		if (message[i] == '\n')
 			++lines;
-		if (cols >= my_msgs.w)
-			++cols;
+		++i;
 	}
 	return lines;
 }
@@ -97,57 +96,31 @@ int how_many_lines (unsigned char *message)
 int show_messages (void)
 {
 	int history_size = 0, it;
-	char f = 1;
-	unsigned char ch;
 	unsigned char bw = (COLS/8)%2 ? COLS/8-1 : COLS/8;
-	char nickname_showed = 0;
 	unsigned char msg[21000] = { '\0' };
-	unsigned char *last_tab;
 
 	system("touch history.txt");
 	history = fopen("history.txt", "r");
 	fgetc(history);
 	fseek(history, 0, SEEK_END);
 	history_size = ftell(history);
-	fseek(history, 0, SEEK_SET);
-	fseek(history, -21000, SEEK_END);
-	for (int i = 0; i < history_size; ++i)
-		msg[i] = fgetc(history);
-	if (how_many_lines(msg) <= my_msgs.h)
-		wmove(my_msgs.win, my_msgs.h - 3 - how_many_lines(msg), 0);
-	else {
-		wmove(my_msgs.win, 0, 0);
-		f = 1;
-		for (int i = 0; i < (how_many_lines(msg) - my_msgs.h); ++i) {
-			if (msg[i] == '\n') {
-				it = i;
-				for (int ofs = 0; ofs < (strlen(msg) - i); ++ofs) {
-					msg[ofs] = msg[it];
-					++it;
-				}
-			}
-		}
-	}
-	/* Семенюк даун */
-	for (int i = 0; i < strlen(msg); ++i) {
-		ch = msg[i];
-		if (f) {
-			if (ch != '\t')
-				waddch(my_msgs.win, ch | COLOR_PAIR(6) | A_BOLD);
-			else
-				f = 0;
-		} else if (ch == '\n')
-			waddch(my_msgs.win, ch);
-		else {
-			getyx(my_msgs.win, curY, curX);
-			if (curX >= my_msgs.w-alarm_b.w-1 && curY <= alarm_b.ey)
-				wmove(my_msgs.win, curY + 1, 0);
-			waddch(my_msgs.win, ch | COLOR_PAIR(3));
-		}
+	if (history_size > 21000)
+		fseek(history, history_size - 21000, SEEK_SET);
+	else
+		fseek(history, 0, SEEK_SET);
+	it = 0;
+	for (int i = ftell(history); i < history_size; ++i) {
+		msg[it] = fgetc(history);
+		++it;
 	}
 	fclose(history);
+	msg[it] = EOF;
+
+	FILE *d = fopen("debug.log", "a");
+	fprintf(d, "%i", how_many_lines(msg));
+	fclose(d);
+
 	wrefresh(my_msgs.win);
-	my_msgEP = my_msgP = my_msg;
 	alarm_b = create_object((bw/2)%2 ? bw/2 : bw/2-1, bw, 0, COLS-bw,
 			alarming ? COLOR_PAIR(2) : COLOR_PAIR(4), false);
 	attron(alarming ? COLOR_PAIR(2) : COLOR_PAIR(4));
