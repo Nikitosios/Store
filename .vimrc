@@ -34,11 +34,11 @@ augroup END
 let &path.="src/include,/usr/include/AL,src,"
 
 map <F4> 1000<F6>
-map <F5> :!make \|\| gcc -Wall -o $(basename pwd) $(find . -type f -name main.c* -print)<CR>
+map <F5> :!make ; [[ `echo $?` == '2' ]] && gcc -Wall -o $(basename pwd) $(find . -type f -name main.c* -print)<CR>
 map <F6> ==j100h
 map <F7> :!./$(find . -type f -executable -print)<CR>
 au FileType python map <F7> :!python `find . -name main.py -print`<CR>
-map <F8> :!make \|\| gcc -Wall -o $(basename pwd) $(find . -type f -name main.c* -print)<CR>:!./$(find . -type f -executable -print)<CR>
+map <F8> :!make ; [[ `echo $?` == '2' ]] && gcc -Wall -o $(basename pwd) $(find . -type f -name main.c* -print)<CR>:!./$(find . -type f -executable -print)<CR>
 map <C-n> :NERDTreeToggle<CR>
 
 filetype indent plugin on
