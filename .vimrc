@@ -4,6 +4,7 @@ Plug 'Shougo/neocomplcache.vim'
 Plug 'octol/vim-cpp-enhanced-highlight'
 Plug 'python-mode/python-mode'
 Plug 'scrooloose/nerdtree', { 'on' : 'NERDTreeToggle' }
+Plug 'scrooloose/nerdcommenter'
 Plug 'jiangmiao/auto-pairs'
 Plug 'tpope/vim-fugitive'
 Plug 'airblade/vim-gitgutter'
