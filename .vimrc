@@ -48,6 +48,8 @@ map <C-n> :NERDTreeToggle<CR>
 filetype indent plugin on
 au FileType python set expandtab
 
+let g:NERDCustomDelimiters = { 'c': { 'left': '/* ','right': ' */' } }
+
 let g:neocomplcache_enable_at_startup = 1
 
 let g:cpp_class_scope_highlight = 1
