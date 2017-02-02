@@ -35,18 +35,19 @@ augroup END
 let &path.="src/include,/usr/include/AL,src,"
 
 map <F4> 1000<F6>
-map <F5> :!make ; [[ `echo $?` == '2' ]] && gcc -Wall -o $(basename pwd) $(find . -type f -name main.c* -print)<CR>
+map <F5> :!make<CR>
 map <F6> ==j100h
-map <F7> :!./$(find . -type f -executable -print)<CR>
-au FileType python map <F7> :!python `find . -name main.py -print`<CR>
-map <F8> :!make ; [[ `echo $?` == '2' ]] && gcc -Wall -o $(basename pwd) $(find . -type f -name main.c* -print)<CR>:!./$(find . -type f -executable -print)<CR>
-map <F9> :!./$(find . -type f -executable -print) 
-au FileType python map <F9> :!python `find . -name main.py -print` 
-map <F10> :!make ; [[ `echo $?` == '2' ]] && gcc -Wall -o $(basename pwd) $(find . -type f -name main.c* -print)<CR>:!./$(find . -type f -executable -print) 
+map <F7> :!./<Tab><Tab><CR>
+au FileType python map <F7> :!python $(find . -name "main.py" -print)<CR>
+map <F8> <F5><F7>
+map <F9> :!./
+au FileType python map <F9> :!python `find . -name "main.py" -print` 
+map <F10> <F5>:!./
 map <C-n> :NERDTreeToggle<CR>
 
 filetype indent plugin on
 au FileType python set expandtab
+au FileType asm set ft=nasm
 
 let g:NERDCustomDelimiters = { 'c': { 'left': '/* ','right': ' */' } }
 
