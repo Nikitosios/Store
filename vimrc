@@ -33,7 +33,7 @@ if has("gui_running")
 	au FileType python set guifont=Monospace\ Bold\ Italic\ 11
 endif
 
-map <F4> 1000<F6>
+map <F4> gg1000<F6>
 map <F5> :!make<CR>
 map <F6> ==j100h
 map <F7> :!`find . -executable -type f` \|\| ./main<CR>
