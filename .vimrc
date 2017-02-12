@@ -28,6 +28,11 @@ set tabstop=4
 set shiftwidth=4
 set noexpandtab
 
+if has("gui_running")
+	set guifont=Monospace Bold Italic 10
+	au FileType python set guifont=Monospace Bold Italic 11
+endif
+
 map <F4> 1000<F6>
 map <F5> :!make<CR>
 map <F6> ==j100h
